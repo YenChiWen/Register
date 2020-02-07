@@ -1,0 +1,2 @@
+# remoteSetting
+QT

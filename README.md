@@ -1,2 +1,2 @@
-# remoteSetting
-QT
+# Register
+[Android] 

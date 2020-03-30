@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Register</string>
+    <string name="btn_touch">Register_Touch</string>
+    <string name="btn_face">Register_Face</string>
+
+    <string name="fab_search_day" />
+
+    <string name="title_member">Member</string>
+    <string name="title_month">Month</string>
+    <string name="title_day">Day</string>
+
+
+    <string name="Spinner">SpinnerDemo</string>
+    <string-array name="item">
+        <item>New</item>
+        <item>Edit</item>
+        <item>Remove</item>
+    </string-array>
+</resources>

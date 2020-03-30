@@ -1,0 +1,1 @@
+include ':app',':ncnn_id', ':opencv-3.4.1'

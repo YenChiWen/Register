@@ -52,8 +52,10 @@ public class Member_Edit extends AppCompatActivity {
     //region
     public void Init(){
         // initial class
-        thread_initial = new Thread(runnable_initial);
-        thread_initial.start();
+        if(MainActivity.mFlag_FaceDetectEnable){
+            thread_initial = new Thread(runnable_initial);
+            thread_initial.start();
+        }
 
         // onclick listener
         Button btnCheck = findViewById(R.id.btn_check);
@@ -84,10 +86,12 @@ public class Member_Edit extends AppCompatActivity {
             ET_id.setText(sOld_ID);
             ET_name.setText(sOld_name);
 
-            String sPath = "/mnt/sdcard/" + getApplicationContext().getPackageName() + "/member";
-            String sFile = sOld_ID + ".jpg";
-            Bitmap bmp = BitmapFactory.decodeFile(sPath + "/" + sFile);
-            imageView.setImageBitmap(bmp);
+            if(MainActivity.mFlag_FaceDetectEnable) {
+                String sPath = "/mnt/sdcard/" + getApplicationContext().getPackageName() + "/member";
+                String sFile = sOld_ID + ".jpg";
+                Bitmap bmp = BitmapFactory.decodeFile(sPath + "/" + sFile);
+                imageView.setImageBitmap(bmp);
+            }
 
             // visibility
             btnRemove.setVisibility(View.VISIBLE);
@@ -134,7 +138,7 @@ public class Member_Edit extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_CAPTURE_IMAGE && resultCode == RESULT_OK) {
+        if (MainActivity.mFlag_FaceDetectEnable && requestCode == REQUEST_CAPTURE_IMAGE && resultCode == RESULT_OK) {
             if (data != null) {
                 final Bitmap bmp = (Bitmap) data.getExtras().get("data");
 
@@ -190,7 +194,7 @@ public class Member_Edit extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            if(intent.resolveActivity(getPackageManager()) != null){
+            if(MainActivity.mFlag_FaceDetectEnable && intent.resolveActivity(getPackageManager()) != null){
                 startActivityForResult(intent, REQUEST_CAPTURE_IMAGE);
             }
         }

@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity{
     public static DigitDetector mDigitDetector;
     Thread thread_initial = null;
     private WebService webService = null;
+    public static boolean mFlag_FaceDetectEnable = false;
 
     //region
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -60,10 +61,6 @@ public class MainActivity extends AppCompatActivity{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        // face ID initial
-//        thread_initial = new Thread(runnable_initial);
-//        thread_initial.start();
 
         // navView
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -77,9 +74,15 @@ public class MainActivity extends AppCompatActivity{
         fab.setOnClickListener(onClickListener_Send);
         btnTouch.setOnClickListener(onClickListener_Touch);
         btnFace.setOnClickListener(onClickListener_Face);
+        btnFace.setEnabled(MainActivity.mFlag_FaceDetectEnable);
         fabBackup.setOnClickListener(onClickListener_Backup);
 
-//        init_model_file();
+        // face ID initial
+        if(mFlag_FaceDetectEnable){
+            thread_initial = new Thread(runnable_initial);
+            thread_initial.start();
+            init_model_file();
+        }
     }
 
     private void init_model_file(){
@@ -131,7 +134,7 @@ public class MainActivity extends AppCompatActivity{
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_CAPTURE_IMAGE && resultCode == RESULT_OK) {
+        if (mFlag_FaceDetectEnable && requestCode == REQUEST_CAPTURE_IMAGE && resultCode == RESULT_OK) {
             if (data != null) {
                 final Bitmap bmp = (Bitmap) data.getExtras().get("data");
 
@@ -258,7 +261,7 @@ public class MainActivity extends AppCompatActivity{
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            if(intent.resolveActivity(getPackageManager()) != null){
+            if(MainActivity.mFlag_FaceDetectEnable && intent.resolveActivity(getPackageManager()) != null){
                 startActivityForResult(intent, REQUEST_CAPTURE_IMAGE);
             }
         }

@@ -4,6 +4,8 @@ package com.example.myapplication;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -245,7 +247,10 @@ public class SQL{
 
     public void Insert_register_day2month_(String sID, String date){
         if(!TableIsExist("register_month") && !TableIsExist("register_day")){
-            if(date == null){
+            String sQuery_ = "Select _RegisterTime from register_month where _id=" + sID;
+            Cursor cursor =db.rawQuery(sQuery_, null);
+
+            if(date == null || cursor.getCount() == 0){
                 String sQuery = "insert into register_month (_id, _RegisterTime, _method)" +
                         " select _id, min(_RegisterTime), _method from register_day" +
                         " where register_day._id=" + sID +

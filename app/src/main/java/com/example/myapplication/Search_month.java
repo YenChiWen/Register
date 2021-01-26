@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,6 +27,7 @@ import java.util.List;
 
 public class Search_month extends AppCompatActivity {
     TableLayout tableLayout;
+    String TAG = "Search_month";
 
     //region
     private void Init(){
@@ -279,17 +281,26 @@ public class Search_month extends AppCompatActivity {
         }
         DB_close();
 
+        // get this month first datatime
+        Date currentTime = Calendar.getInstance().getTime();
+        currentTime.setDate(1);
+        currentTime.setHours(0);
+        currentTime.setMinutes(0);
+        currentTime.setSeconds(0);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String sDate = df.format(currentTime.getTime());
+
         // get register_month max date
-        String sDate = "";
-        DB_open("register_month");
-        cursor = sql.Select_register_month_max_date();
-        if(cursor.getCount() > 0){
-            cursor.moveToFirst();
-            do{
-                sDate = cursor.getString(0);
-            } while(cursor.moveToNext());    // 有一下筆就繼續迴圈
-        }
-        DB_close();
+//        String sDate = "";
+//        DB_open("register_month");
+//        cursor = sql.Select_register_month_max_date();
+//        if(cursor.getCount() > 0){
+//            cursor.moveToFirst();
+//            do{
+//                sDate = cursor.getString(0);
+//            } while(cursor.moveToNext());    // 有一下筆就繼續迴圈
+//        }
+//        DB_close();
 
         // insert
         if(!member.isEmpty()) {
